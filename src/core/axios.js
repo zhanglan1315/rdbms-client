@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Axios from 'axios'
 
 const local = true
-const LOCAL_URL = 'http://mdn.test'
+const LOCAL_URL = 'http://rdbms.test'
 const SERVER_URL = 'https://api.zhanglan.tech:7000'
 
 if (Vue.config.productionTip === false || local === false) {
