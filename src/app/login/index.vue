@@ -1,9 +1,11 @@
 <template>
-  <router-view />
+  <div>
+    Login Page
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+
 }
 </script>
