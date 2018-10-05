@@ -1,6 +1,6 @@
 <template>
   <div>
-    Login Page
+    <a class="button is-primary">I'm Button!</a>
   </div>
 </template>
 
