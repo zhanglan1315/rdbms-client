@@ -10,7 +10,7 @@ export default [
     children: [
       {
         path: '',
-        name: 'home',
+        name: 'connections',
         component: () => import('./connections'),
         props: true,
         children: [

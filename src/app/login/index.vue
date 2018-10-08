@@ -122,7 +122,7 @@ export default {
         await sleep(1000)
         const token = await auth.login(this.params)
         store.set('token', token)
-        this.$router.push({name: 'home'})
+        this.$router.push('/')
       } catch (e) {
         this.message = '用户名或密码错误'
       } finally {

@@ -38,7 +38,7 @@ export default {
   methods: {
     handleClose () {
       this.$router.push({
-        name: 'home'
+        name: 'connections'
       })
     },
 
