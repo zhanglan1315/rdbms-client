@@ -34,6 +34,15 @@ export default [
         ]
       },
       {
+        path: 'postgres/:connectionId',
+        name: 'postgres',
+        component: () => import('./postgres'),
+        props: true,
+        children: [
+
+        ]
+      },
+      {
         path: 'test',
         name: 'test',
         component: () => import('./test')

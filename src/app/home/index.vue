@@ -3,9 +3,11 @@
     <Topbar />
     <Notifications ref="notifications"/>
     <div style="flex: 2; overflow: auto;">
-      <router-view
-        :notifications="$refs.notifications"
-      />
+      <keep-alive>
+        <router-view
+          :notifications="$refs.notifications"
+        />
+      </keep-alive>
     </div>
   </div>
 </template>

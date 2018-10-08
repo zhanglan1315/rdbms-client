@@ -58,10 +58,6 @@ export default {
   },
 
   methods: {
-    handleItemClick () {
-
-    },
-
     handleSettingClick () {
       this.$router.push({
         name: 'connection manage',
@@ -74,6 +70,24 @@ export default {
     handleDestroyClick () {
       this.$router.push({
         name: 'connection destroy',
+        params: {
+          connectionId: this.connection.id
+        }
+      })
+    },
+
+    async handleItemClick () {
+      this.isHovered = false
+      switch (this.connection.driver) {
+        case 'pgsql':
+          this.handlePostgresBoot()
+          break
+      }
+    },
+
+    async handlePostgresBoot () {
+      this.$router.push({
+        name: 'postgres',
         params: {
           connectionId: this.connection.id
         }
