@@ -6,9 +6,33 @@ export default [
   },
   {
     path: '/',
-    name: 'home',
     component: () => import('./home'),
     children: [
+      {
+        path: '',
+        name: 'home',
+        component: () => import('./connections'),
+        props: true,
+        children: [
+          {
+            path: 'create',
+            name: 'connection create',
+            component: () => import('./connections/Create')
+          },
+          {
+            path: ':connectionId',
+            name: 'connection manage',
+            component: () => import('./connections/Manage'),
+            props: true
+          },
+          {
+            path: ':connectionId/destroy',
+            name: 'connection destroy',
+            component: () => import('./connections/Destroy'),
+            props: true
+          }
+        ]
+      },
       {
         path: 'test',
         name: 'test',
