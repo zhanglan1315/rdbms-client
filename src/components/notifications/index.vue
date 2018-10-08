@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import Notification from './Notification'
+
 export default {
   data () {
     return {
@@ -30,7 +32,21 @@ export default {
 
       setTimeout(() => {
         this.items.splice(items.findIndex(item => item.id === id), 1)
-      }, context.duration || 5000)
+      }, context.duration || 3000)
+    },
+
+    $success (text) {
+      this.$add({
+        component: Notification,
+        props: { text, icon: 'success', color: 'success' }
+      })
+    },
+
+    $error (text) {
+      this.$add({
+        component: Notification,
+        props: { text, icon: 'error', color: 'danger' }
+      })
     }
   }
 }

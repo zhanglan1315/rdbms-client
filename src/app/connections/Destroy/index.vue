@@ -25,7 +25,6 @@
 
 <script>
 import ConnectionApi from '@/api/connection'
-import Notification from './Notification'
 
 export default {
   name: 'ConnectionDestroy',
@@ -46,9 +45,7 @@ export default {
       await ConnectionApi.destroy(this.connectionId)
       this.$emit('destroyed', this.connectionId)
       this.handleClose()
-      this.notifications.$add({
-        component: Notification
-      })
+      this.notifications.$error('数据库连接已删除')
     }
   }
 }

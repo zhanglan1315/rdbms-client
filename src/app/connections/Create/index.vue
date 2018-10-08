@@ -89,7 +89,6 @@
 
 <script>
 import ConnectionApi from '@/api/connection'
-import Notification from './Notification'
 import ConnectionTest from '../common/ConnectionTest'
 
 export default {
@@ -130,9 +129,7 @@ export default {
 
       this.$emit('created', item)
       this.handleClose()
-      this.notifications.$add({
-        component: Notification
-      })
+      this.notifications.$success('数据库连接已创建')
     },
 
     autoCompletePostgres () {
