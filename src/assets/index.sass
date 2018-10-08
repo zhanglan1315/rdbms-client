@@ -19,3 +19,21 @@
   height: 60px
   padding: 0.75rem
   box-shadow: $box-shadow
+
+// @app/connection/Item
+.connection-item
+  display: flex
+  color: $text
+  align-items: center
+  justify-content: flex-start
+  padding: 0.5em 0.75em
+  min-height: 4rem
+  &:hover
+    background-color: $background
+
+.button
+  &.is-setting
+    border: none
+    background-color: rgba($info, 0.3)
+    &:hover
+      background-color: rgba($info, 0.2)
