@@ -4,7 +4,7 @@
     style="display: flex; justify-content: center"
   >
     <span :class="'icon has-text-' + color">
-      <i class="iconfont icon-success"></i>
+      <i :class="'iconfont icon-' + icon"></i>
     </span>
 
     <div style="width: 0.5rem"></div>
