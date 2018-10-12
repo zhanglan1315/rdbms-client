@@ -1,10 +1,18 @@
+import store from 'store'
 import axios from '@/core/axios'
+import dependencies from '@/core/runtime'
+
+const router = dependencies.router
 
 export default {
-  async login (params) {
-    const response = await axios.post('auth/login', params)
-
-    return response.data
+  login (username, password) {
+    return axios.post('auth/login', {
+      username,
+      password
+    }).then(response => {
+      store.set('token', response.data)
+      router.push('/')
+    })
   },
 
   async check () {

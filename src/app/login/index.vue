@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import store from 'store'
 import auth from '@/api/auth'
 import { sleep } from '@/utils/async'
 
@@ -117,17 +116,19 @@ export default {
         this.usernameDanger
       ) return
 
-      try {
-        this.isLoginning = true
-        await sleep(1000)
-        const token = await auth.login(this.params)
-        store.set('token', token)
-        this.$router.push('/')
-      } catch (e) {
-        this.message = '用户名或密码错误'
-      } finally {
-        this.isLoginning = false
-      }
+      this.isLoginning = true
+
+      await sleep(1000)
+      auth.login(this.params.username, this.params.password)
+        .catch(e => {
+          if (!e.response) {
+            throw e
+          } else if (e.response.status === 403) {
+            this.message = '用户名或密码错误'
+          }
+        }).finally(() => {
+          this.isLoginning = false
+        })
     },
 
     handleUsernameBlur (value) {
