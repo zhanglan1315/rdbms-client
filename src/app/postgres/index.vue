@@ -1,6 +1,23 @@
 <template>
-  <div v-if="!isLoading">
-    Postgres
+  <div
+    v-if="!isLoading"
+    style="width: 100%; height: 100%; display: flex"
+  >
+    <div
+      class="menu-container is-unselectable"
+      style="width: 260px"
+    >
+      <div class="menu-list">
+        <DatabaseMenu
+          v-for="database in databases" :key="database"
+          :database="database"
+          :notifications="notifications"
+        />
+      </div>
+    </div>
+    <div style="flex: 2; height: 100%; overflow: auto">
+      <router-view/>
+    </div>
   </div>
   <div v-else>
     <div class="loading"></div>
@@ -8,10 +25,18 @@
 </template>
 
 <script>
-import pg from '@/api/postgres'
 import { sleep } from '@/utils/async'
 
+import pg from '@/api/postgres'
+import DatabaseMenu from './DatabaseMenu'
+
 export default {
+  name: 'Postgres',
+
+  components: {
+    DatabaseMenu
+  },
+
   props: {
     connectionId: {},
 
@@ -20,25 +45,39 @@ export default {
 
   data () {
     return {
-      isLoading: false
+      isLoading: false,
+
+      databases: [],
+      database: null
     }
   },
 
-  async activated () {
-    try {
-      pg.setConnectionId(this.connectionId)
-      this.isLoading = true
+  methods: {
+    async getDatabases () {
+      this.databases = await pg.databases()
+    }
+  },
 
-      await sleep(1000)
-      await pg.connect()
-    } catch (e) {
-      this.$router.push({
-        name: 'connections'
-      })
+  watch: {
+    connectionId: {
+      immediate: true,
+      async handler () {
+        this.isLoading = true
+        pg.setConnectionId(this.connectionId)
+        await sleep(1000)
 
-      this.notifications.$error('数据库连接失败')
-    } finally {
-      this.isLoading = false
+        try {
+          await this.getDatabases()
+        } catch (e) {
+          this.$router.push({
+            name: 'connections'
+          })
+
+          this.notifications.$error('数据库连接失败')
+        } finally {
+          this.isLoading = false
+        }
+      }
     }
   }
 }

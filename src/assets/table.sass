@@ -1,0 +1,102 @@
+.table
+  margin-bottom: 0
+  th,
+  td
+    &.is-outlined
+      outline-color: $primary
+    &.is-hoverable
+      cursor: pointer
+      &:hover
+        background-color: $background
+  &.is-centered
+    th,
+    td
+      text-align: center
+      vertical-align: middle
+  &.is-left
+    th,
+    td
+      text-align: left
+
+  &.is-bordered
+    thead
+      background-color: #f9fafb
+
+  &.is-nowrapped
+    th,
+    td
+      white-space: nowrap
+  &.is-hoverable
+    tbody
+      tr:not(.is-selected)
+        &:hover
+          background-color: $background
+      tr.is-hovered
+          background-color: $background
+  tr.is-selected
+    color: $text
+    background-color: #f2f6ff
+    td
+      border-color: $border
+  &.is-editable
+    th,
+    td
+      -webkit-user-modify: read-write-plaintext-only
+  th,
+  td
+    outline: 2px solid transparent
+    &.is-error
+      outline-color: $danger
+    &.is-editable
+      white-space: nowrap
+      -webkit-user-modify: read-write-plaintext-only
+    &.is-editable,
+    &.is-selectable,
+      &:hover
+        cursor: pointer
+        background-color: $background
+      &:focus,
+      &.is-focus
+        cursor: text
+        outline-color: #73a2e3
+      &.is-changed
+        background-color: #f2f6ff
+        font-weight: bold
+
+    &.is-centered
+      text-align: center
+      vertical-align: middle
+
+    &.is-selectable
+      position: relative
+      &:hover
+        &::after
+          border-color: $link
+      &.is-focus
+        .dropdown-menu
+          display: block
+
+    &.select
+      &::after
+        +arrow($input-arrow)
+        margin-top: -0.375em
+        right: 1.125em
+        top: 50%
+        z-index: 4
+
+.table-container
+  overflow: auto
+  height: 100%
+  width: 100%
+  border: 1px solid $border
+  .table
+    &.is-bordered
+      border: none
+      thead
+        th,
+        td
+          border-top: none
+      th,
+      td
+        &:first-child
+          border-left: none

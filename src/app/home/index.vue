@@ -5,7 +5,7 @@
     <div style="flex: 2; overflow: auto;">
       <keep-alive>
         <router-view
-          :notifications="$refs.notifications"
+          :notifications="notifications"
         />
       </keep-alive>
     </div>
@@ -18,6 +18,8 @@ import tokenManager from './tokenManager'
 import Notifications from '@/components/notifications'
 
 export default {
+  name: 'Home',
+
   mixins: [tokenManager],
 
   components: {
@@ -28,7 +30,12 @@ export default {
   data () {
     return {
       token: {},
+      notifications: {}
     }
+  },
+
+  mounted () {
+    this.notifications = this.$refs.notifications
   }
 }
 </script>

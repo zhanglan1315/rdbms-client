@@ -15,5 +15,43 @@ export default {
     await axios.post('postgres/connect', {
       connectionId
     })
+  },
+
+  async databases () {
+    const response = await axios.post('postgres/databases', {
+      connectionId
+    })
+
+    return response.data
+  },
+
+  async schemas (database) {
+    const response = await axios.post('postgres/schemas', {
+      database,
+      connectionId
+    })
+
+    return response.data
+  },
+
+  async tables (database, schema) {
+    const response = await axios.post('postgres/tables', {
+      schema,
+      database,
+      connectionId
+    })
+
+    return response.data
+  },
+
+  async select (database, schema, sql) {
+    const response = await axios.post('postgres/select', {
+      sql,
+      schema,
+      database,
+      connectionId
+    })
+
+    return response.data
   }
 }

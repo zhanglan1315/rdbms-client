@@ -15,18 +15,18 @@ export default [
         props: true,
         children: [
           {
-            path: 'create',
+            path: 'connections/create',
             name: 'connection create',
             component: () => import('./connections/Create')
           },
           {
-            path: ':connectionId',
+            path: 'connections/:connectionId',
             name: 'connection manage',
             component: () => import('./connections/Manage'),
             props: true
           },
           {
-            path: ':connectionId/destroy',
+            path: 'connections/:connectionId/destroy',
             name: 'connection destroy',
             component: () => import('./connections/Destroy'),
             props: true
@@ -34,12 +34,17 @@ export default [
         ]
       },
       {
-        path: 'postgres/:connectionId',
+        path: 'connection/:connectionId',
         name: 'postgres',
         component: () => import('./postgres'),
         props: true,
         children: [
-
+          {
+            path: 'tables/:database/:schema/:table',
+            component: () => import('./postgres/Table'),
+            name: 'postgres table',
+            props: true
+          }
         ]
       },
       {

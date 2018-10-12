@@ -2,6 +2,15 @@
 @import '~bulma'
 @import './icon'
 @import './loading'
+@import './table'
+@import './menus'
+
+.is-unselectable
+  -webkit-user-select: none // Chrome all  Safari all 
+  -moz-user-select: none // Firefox all 
+  -ms-user-select: none // IE 10+ 
+  -o-user-select: none
+  user-select: none
 
 // @app/login
 .login-dialog
@@ -18,7 +27,7 @@
 .app-topbar
   height: 60px
   padding: 0.75rem
-  box-shadow: $box-shadow
+  border-bottom: 1px solid $border
 
 // @app/connection/Item
 .connection-item
