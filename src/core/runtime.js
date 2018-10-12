@@ -1,5 +1,6 @@
 export default {
   vue: {},
   store: {},
-  router: {}
+  router: {},
+  notification: {}
 }

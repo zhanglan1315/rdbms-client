@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import Dependencies from '@/core/runtime'
 import ConnectionApi from '@/api/connection'
 import ConnectionTest from '../common/ConnectionTest'
 
@@ -100,7 +101,6 @@ export default {
   props: {
     connection: {},
     connectionId: {},
-    notifications: Object
   },
 
   data () {
@@ -143,7 +143,7 @@ export default {
 
       this.handleClose()
 
-      this.notifications.$success('数据库连接已保存')
+      Dependencies.notification.success('数据库连接已保存')
     }
   },
 

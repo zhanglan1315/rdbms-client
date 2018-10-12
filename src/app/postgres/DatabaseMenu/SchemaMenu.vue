@@ -69,7 +69,6 @@
       :tables="tables"
       :schema="schema"
       :database="database"
-      :notifications="notifications"
     />
   </ul>
 </template>
@@ -77,6 +76,7 @@
 <script>
 import pg from '@/api/postgres'
 import { sleep } from '@/utils/async'
+import Dependencies from '@/core/runtime'
 import TableMenuContainer from './TableMenuContainer'
 
 export default {
@@ -89,7 +89,6 @@ export default {
   props: {
     schema: String,
     database: String,
-    notifications: Object
   },
 
   data () {
@@ -113,7 +112,7 @@ export default {
 
         this.isActived = true
       } catch (e) {
-        this.notifications.$error('打开数据库失败')
+        Dependencies.notification.error('打开数据库失败')
       } finally {
         this.isLoading = false
       }

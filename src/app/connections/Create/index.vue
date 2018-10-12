@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import Dependencies from '@/core/runtime'
 import ConnectionApi from '@/api/connection'
 import ConnectionTest from '../common/ConnectionTest'
 
@@ -100,7 +101,6 @@ export default {
 
   props: {
     total: Number,
-    notifications: Object
   },
 
   data () {
@@ -129,7 +129,7 @@ export default {
 
       this.$emit('created', item)
       this.handleClose()
-      this.notifications.$success('数据库连接已创建')
+      Dependencies.notification.success('数据库连接已创建')
     },
 
     autoCompletePostgres () {

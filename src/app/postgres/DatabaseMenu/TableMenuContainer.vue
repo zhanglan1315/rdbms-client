@@ -40,7 +40,6 @@
         :table="table"
         :schema="schema"
         :database="database"
-        :notifications="notifications"
       />
     </template>
   </ul>
@@ -58,7 +57,6 @@ export default {
     tables: Array,
     schema: String,
     database: String,
-    notifications: Object
   },
 
   data () {

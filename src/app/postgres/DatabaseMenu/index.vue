@@ -68,7 +68,6 @@
         v-for="schema in schemas" :key="schema"
         :schema="schema"
         :database="database"
-        :notifications="notifications"
       />
     </template>
   </ul>
@@ -78,6 +77,7 @@
 import pg from '@/api/postgres'
 import { sleep } from '@/utils/async'
 import SchemaMenu from './SchemaMenu'
+import Dependencies from '@/core/runtime'
 
 export default {
   name: 'PostgresDatabaseMenu',
@@ -88,7 +88,6 @@ export default {
 
   props: {
     database: {},
-    notifications: Object
   },
 
   data () {
@@ -112,7 +111,7 @@ export default {
 
         this.isActived = true
       } catch (e) {
-        this.notifications.$error('打开数据库失败')
+        Dependencies.notification.error('打开数据库失败')
       } finally {
         this.isLoading = false
       }

@@ -11,7 +11,6 @@
         <DatabaseMenu
           v-for="database in databases" :key="database"
           :database="database"
-          :notifications="notifications"
         />
       </div>
     </div>
@@ -26,6 +25,7 @@
 
 <script>
 import { sleep } from '@/utils/async'
+import Dependencies from '@/core/runtime'
 
 import pg from '@/api/postgres'
 import DatabaseMenu from './DatabaseMenu'
@@ -39,8 +39,6 @@ export default {
 
   props: {
     connectionId: {},
-
-    notifications: Object
   },
 
   data () {
@@ -73,7 +71,7 @@ export default {
             name: 'connections'
           })
 
-          this.notifications.$error('数据库连接失败')
+          Dependencies.notification.error('数据库连接失败')
         } finally {
           this.isLoading = false
         }

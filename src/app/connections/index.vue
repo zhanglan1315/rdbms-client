@@ -32,7 +32,6 @@
     <router-view
       :total="connections.length"
       :connection="data[connectionId]"
-      :notifications="notifications"
       @created="addConnection"
       @updated="updateConnection"
       @destroyed="removeConnection"
@@ -57,7 +56,6 @@ export default {
 
   props: {
     connectionId: {},
-    notifications: Object
   },
 
   data () {

@@ -35,7 +35,6 @@ export default {
     table: String,
     schema: String,
     database: String,
-    notifications: Object
   },
 
   data () {
