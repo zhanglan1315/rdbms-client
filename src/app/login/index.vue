@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import storage from 'store'
 import auth from '@/api/auth'
 import { sleep } from '@/utils/async'
 
@@ -120,6 +121,14 @@ export default {
 
       await sleep(1000)
       auth.login(this.params.username, this.params.password)
+        .then(response => {
+          // console.log(response)
+          const token = response.data
+          storage.set('token', token)
+          this.$store.commit('token/setToken', token)
+          this.$store.commit('token/setIsVerified', true)
+          this.$router.push('/')
+        })
         .catch(e => {
           if (!e.response) {
             throw e

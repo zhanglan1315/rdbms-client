@@ -1,10 +1,19 @@
 <template>
-  <div style="display: flex; flex-flow: column; height: 100vh">
+  <div
+    v-if="isInitialized"
+    style="display: flex; flex-flow: column; height: 100vh"
+  >
     <Topbar />
     <Notification ref="notification"/>
-    <div style="flex: 2; overflow: auto;">
+    <div
+      v-if="!isNetworkError"
+      style="flex: 2; overflow: auto;"
+    >
       <router-view />
     </div>
+  </div>
+  <div v-else>
+    <div class="loading"></div>
   </div>
 </template>
 
@@ -13,9 +22,22 @@ import dependencies from '@/core/runtime'
 
 import Topbar from './layout/Topbar'
 import Notification from './layout/Notification'
+import token from './bootstrap/token'
 
 export default {
   name: 'App',
+
+  mixins: [token],
+
+  computed: {
+    isInitialized () {
+      return this.$store.state.token.isLoaded
+    },
+
+    isNetworkError () {
+      return this.$store.state.error.network
+    }
+  },
 
   components: {
     Topbar,
@@ -23,6 +45,10 @@ export default {
   },
 
   mounted () {
+    dependencies.notification = this.$refs.notification
+  },
+
+  updated () {
     dependencies.notification = this.$refs.notification
   }
 }

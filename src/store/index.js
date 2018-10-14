@@ -1,5 +1,9 @@
+import error from './error'
+import token from './token'
+
 export default {
-  state: {
-    _test: 'vuex is running'
+  modules: {
+    error,
+    token
   }
 }

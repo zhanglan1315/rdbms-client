@@ -1,15 +1,25 @@
 <template>
-  <keep-alive>
-    <router-view />
-  </keep-alive>
+  <div v-if="token.isVerified" style="height: 100%; width: 100%">
+    <keep-alive>
+      <router-view />
+    </keep-alive>
+  </div>
 </template>
 
 <script>
-import tokenManager from './tokenManager'
-
 export default {
   name: 'Home',
 
-  mixins: [tokenManager]
+  computed: {
+    token () {
+      return this.$store.state.token
+    }
+  },
+
+  created () {
+    if (!this.token.isVerified) {
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
