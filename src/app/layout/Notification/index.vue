@@ -32,7 +32,7 @@ export default {
 
       setTimeout(() => {
         this.items.splice(items.findIndex(item => item.id === id), 1)
-      }, context.duration || 3000)
+      }, context.duration || 5000)
     },
 
     success (text) {
