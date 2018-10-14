@@ -69,7 +69,6 @@
 <script>
 import storage from 'store'
 import auth from '@/api/auth'
-import { sleep } from '@/utils/async'
 
 export default {
   data () {
@@ -119,7 +118,6 @@ export default {
 
       this.isLoginning = true
 
-      await sleep(1000)
       auth.login(this.params.username, this.params.password)
         .then(response => {
           // console.log(response)
