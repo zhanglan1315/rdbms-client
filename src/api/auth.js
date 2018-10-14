@@ -8,6 +8,10 @@ export default {
     })
   },
 
+  register (params) {
+    return axios.post('users', params)
+  },
+
   check () {
     return axios.post('auth/check')
   },

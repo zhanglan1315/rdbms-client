@@ -5,6 +5,11 @@ export default [
     component: () => import('./login')
   },
   {
+    path: '/register',
+    name: 'register',
+    component: () => import('./register')
+  },
+  {
     path: '/',
     component: () => import('./home'),
     children: [
