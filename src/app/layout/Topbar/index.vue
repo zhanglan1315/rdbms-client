@@ -11,6 +11,15 @@
     </div>
 
     <div class="level-right">
+      <template v-if="!isVerified">
+        <p class="level-item">
+          <a @click="$router.push({name: 'register'})">注册</a>
+        </p>
+        <p class="level-item">
+          <a @click="$router.push({name: 'login'})">登陆</a>
+        </p>
+      </template>
+
       <p
         class="level-item"
         v-if="isVerified"
