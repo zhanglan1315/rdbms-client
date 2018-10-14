@@ -1,5 +1,5 @@
 <template>
-  <nav class="app-topbar level is-marginless">
+  <nav class="app-topbar is-mobile level is-marginless">
     <div class="level-left">
       <div
         class="title"
