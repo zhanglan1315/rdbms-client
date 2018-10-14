@@ -2,7 +2,7 @@
   <div
     v-if="!isLoading"
     class="container"
-    style="max-width: 600px; margin-top: 0.75rem"
+    style="max-width: 600px; padding-top: 0.75rem"
   >
     <TheItem
       :key="key"
