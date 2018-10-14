@@ -14,11 +14,5 @@ export default {
 
   check () {
     return axios.post('auth/check')
-  },
-
-  async refresh () {
-    const response = await axios.post('auth/refresh')
-
-    return response.data
   }
 }
