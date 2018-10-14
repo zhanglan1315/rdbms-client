@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { sleep } from '@/utils/async'
 import Dependencies from '@/core/runtime'
 
 import pg from '@/api/postgres'
@@ -62,7 +61,6 @@ export default {
       async handler () {
         this.isLoading = true
         pg.setConnectionId(this.connectionId)
-        await sleep(1000)
 
         try {
           await this.getDatabases()

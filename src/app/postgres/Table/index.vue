@@ -34,7 +34,6 @@
 
 <script>
 import pg from '@/api/postgres'
-import { sleep } from '@/utils/async'
 
 export default {
   name: 'PostgresTable',
@@ -69,7 +68,6 @@ export default {
       this.isLoading = true
 
       try {
-        await sleep(500)
         this.dataSource = await pg.select(this.database, this.schema, this.sql)
       } finally {
         this.isLoading = this.loading = false

@@ -44,7 +44,6 @@
 
 <script>
 import TheItem from './Item'
-import { sleep } from '@/utils/async'
 import ConnectionApi from '@/api/connection'
 
 export default {
@@ -76,7 +75,6 @@ export default {
     async getConnections () {
       this.isLoading = true
       try {
-        await sleep(1000)
         const connections = await ConnectionApi.all()
         const list = [], data = {}
 

@@ -75,7 +75,6 @@
 
 <script>
 import pg from '@/api/postgres'
-import { sleep } from '@/utils/async'
 import SchemaMenu from './SchemaMenu'
 import Dependencies from '@/core/runtime'
 
@@ -106,7 +105,6 @@ export default {
 
       try {
         this.isLoading = true
-        await sleep(500)
         this.schemas = await pg.schemas(this.database)
 
         this.isActived = true
