@@ -1,8 +1,6 @@
 <template>
   <div v-if="token.isVerified" style="height: 100%; width: 100%">
-    <keep-alive>
-      <router-view />
-    </keep-alive>
+    <router-view />
   </div>
 </template>
 
