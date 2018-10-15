@@ -25,6 +25,7 @@
 
 <script>
 import postgres from '@/api/postgres'
+import { sleep } from '@/utils/async'
 
 export default {
   name: 'ConnectionTest',

@@ -62,6 +62,13 @@
             <input v-model="params.database" class="input" type="text">
           </div>
         </div>
+
+        <div class="field">
+          <label class="label">模式</label>
+          <div class="control">
+            <input v-model="params.schema" class="input" type="text">
+          </div>
+        </div>
       </section>
 
       <footer class="modal-card-foot" style="display: flex">
@@ -112,7 +119,8 @@ export default {
         port: '',
         username: '',
         password: '',
-        database: ''
+        database: '',
+        schema: null
       }
     }
   },
@@ -151,6 +159,7 @@ export default {
   created () {
     this.params.driver = 'pgsql'
     this.params.name = 'Database ' + (this.total + 1)
+    this.params.schema = 'public'
   }
 }
 </script>

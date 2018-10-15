@@ -1,13 +1,16 @@
 <template>
   <div
     v-if="isInitialized"
-    style="display: flex; flex-flow: column; height: 100vh"
+    class="full-container is-flex is-flex-column"
+    style="height: 100vh; width: 100vw"
   >
     <Topbar />
+
     <Notification ref="notification"/>
+
     <div
       v-if="!isNetworkError"
-      style="flex: 2; overflow: auto;"
+      class="is-flex-auto"
     >
       <router-view />
     </div>
@@ -29,6 +32,11 @@ export default {
 
   mixins: [token],
 
+  components: {
+    Topbar,
+    Notification
+  },
+
   computed: {
     isInitialized () {
       return this.$store.state.token.isLoaded
@@ -37,11 +45,6 @@ export default {
     isNetworkError () {
       return this.$store.state.error.network
     }
-  },
-
-  components: {
-    Topbar,
-    Notification
   },
 
   mounted () {
