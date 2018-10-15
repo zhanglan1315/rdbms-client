@@ -1,11 +1,11 @@
 <template>
   <div
     v-if="!isLoading"
-    style="width: 100%; height: 100%; display: flex"
+    class="full-container is-flex"
   >
     <div
       class="menu-container is-unselectable"
-      style="width: 260px"
+      style="width: 260px; height: 100%;"
     >
       <div class="menu-list">
         <DatabaseMenu
@@ -14,7 +14,8 @@
         />
       </div>
     </div>
-    <div style="flex: 2; height: 100%; overflow: auto">
+
+    <div class="is-flex-auto">
       <router-view/>
     </div>
   </div>

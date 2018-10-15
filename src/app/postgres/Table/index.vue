@@ -1,30 +1,25 @@
 <template>
   <div
     v-if="!isLoading"
-    style="width: 100%; height: 100%; padding: 0.75rem"
+    class="full-container is-flex is-flex-column"
   >
-    <div class="table-container">
-      <table class="table is-fullwidth is-bordered">
-        <thead>
-          <tr>
-            <th v-for="column in dataSource.columns" :key="column.name">
-              {{column.type}}
-            </th>
-          </tr>
-          <tr>
-            <th v-for="column in dataSource.columns" :key="column.name">
-              <span>{{column.name}}</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(datum, key) in dataSource.data" :key="key">
-            <td v-for="(value, key) in datum" :key="key">
-              {{value}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="tabs is-marginless">
+      <ul>
+        <li class="is-active">
+          <a>数据管理</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="is-flex-auto" style="padding: 0.5rem">
+      <TableView :dataSource="dataSource"/>
+    </div>
+
+    <div style="padding: 0.5rem; padding-top: 0;">
+      <Pagination
+        v-bind="dataSource"
+        @change-page="handleChangePage"
+      />
     </div>
   </div>
   <div v-else>
@@ -34,9 +29,16 @@
 
 <script>
 import pg from '@/api/postgres'
+import TableView from './TableView'
+import Pagination from './Pagination'
 
 export default {
   name: 'PostgresTable',
+
+  components: {
+    TableView,
+    Pagination
+  },
 
   props: {
     table: String,
@@ -52,7 +54,9 @@ export default {
         data: [],
         columns: []
       },
-      isLoading: false
+      isLoading: false,
+
+      page: 1,
     }
   },
 
@@ -63,15 +67,28 @@ export default {
   },
 
   methods: {
-    async handleInitialize () {
-      this.sql = `select * from "${this.table}" limit 100`
+    async search () {
       this.isLoading = true
 
       try {
-        this.dataSource = await pg.select(this.database, this.schema, this.sql)
+        this.dataSource = await pg.table({
+          page: this.page,
+          table: this.table,
+          schema: this.schema,
+          database: this.database,
+        })
       } finally {
-        this.isLoading = this.loading = false
+        this.isLoading = false
       }
+    },
+
+    handleInitialize () {
+      this.search()
+    },
+
+    handleChangePage (page) {
+      this.page = page
+      this.search()
     }
   },
 
@@ -87,13 +104,6 @@ export default {
         ) {
           return
         }
-
-        console.log(
-          this.table,
-          this.schema,
-          this.database,
-          this.connectionId
-        )
 
         this.handleInitialize()
       }

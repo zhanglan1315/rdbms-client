@@ -53,5 +53,14 @@ export default {
     })
 
     return response.data
+  },
+
+  async table (params) {
+    const response = await axios.post('postgres/table', {
+      connectionId,
+      ...params
+    })
+
+    return response.data
   }
 }

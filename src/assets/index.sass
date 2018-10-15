@@ -4,6 +4,7 @@
 @import './loading'
 @import './table'
 @import './menus'
+@import './helper'
 
 .is-unselectable
   -webkit-user-select: none // Chrome all  Safari all 
@@ -25,7 +26,7 @@
 
 // @app/home/Topbar
 .app-topbar
-  min-height: 60px
+  min-height: 52px
   padding: 0.75rem
   border-bottom: 1px solid $border
 
@@ -52,3 +53,8 @@
   .notification
     border-radius: 0
     border-bottom: 1px solid $border
+
+// @app/postgres/index
+.postgres-toolbar
+  padding: 0.25rem
+  border-bottom: 1px solid $border
