@@ -4,7 +4,7 @@
   >
     <div
       class="menu-container is-unselectable"
-      style="min-width: 230px; height: 100%;"
+      style="min-width: 240px; height: 100%;"
     >
       <div class="is-flex" style="padding: 0.25rem">
         <Database

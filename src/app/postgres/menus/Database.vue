@@ -2,23 +2,25 @@
   <a
     style="flex: 1"
     class="button is-light"
-    @click="isShowDropdown = !isShowDropdown"
+    @click="!isLoading && (isShowDropdown = !isShowDropdown)"
     v-clickoutside="() => isShowDropdown = false"
   >
-    <span
-      v-if="isLoading"
-      class="button is-text is-loading"
-    ></span>
-    <span v-else class="icon">
+
+    <span class="icon">
       <span class="iconfont icon-storage"></span>
     </span>
 
     <span>{{database}}</span>
 
+    <span
+      v-if="isLoading"
+      class="button is-text is-loading"
+    ></span>
+
     <div
       class="dropdown-menu"
-      :class="{'is-active': isShowDropdown}"
-      style="min-width: 220px;"
+      :class="{'is-active': !isLoading && isShowDropdown}"
+      style="min-width: 230px;"
     >
       <div class="dropdown-content">
         <a
