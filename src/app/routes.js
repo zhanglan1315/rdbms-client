@@ -45,7 +45,7 @@ export default [
         props: true,
         children: [
           {
-            path: 'tables/:database/:schema/:table',
+            path: 'table',
             component: () => import('./postgres/Table'),
             name: 'postgres table',
             props: true

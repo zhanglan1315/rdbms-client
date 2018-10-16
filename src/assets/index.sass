@@ -13,6 +13,18 @@
   -o-user-select: none
   user-select: none
 
+.dropdown-menu
+  &.is-active
+    display: block
+  &.is-right
+      left: auto
+      right: 0
+  &.is-up
+      bottom: 100%
+      padding-bottom: $dropdown-content-offset
+      padding-top: initial
+      top: auto
+
 // @app/login
 .login-dialog
   position: absolute
@@ -58,3 +70,14 @@
 .postgres-toolbar
   padding: 0.25rem
   border-bottom: 1px solid $border
+
+// @app/postgres/
+.button
+  .dropdown-content
+    padding: 0.5rem
+    padding-top: 0.5rem
+    margin-top: 0.25rem
+    .button:not(:last-child)
+      padding-left: 0
+      padding-right: 0.5rem
+      margin-bottom: 0.5rem

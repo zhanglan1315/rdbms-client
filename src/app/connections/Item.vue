@@ -90,6 +90,11 @@ export default {
         name: 'postgres',
         params: {
           connectionId: this.connection.id
+        },
+        query: {
+          driver: this.connection.driver,
+          schema: this.connection.schema,
+          database: this.connection.database
         }
       })
     }

@@ -1,40 +1,64 @@
 <template>
   <div
-    v-if="!isLoading"
     class="full-container is-flex"
   >
     <div
       class="menu-container is-unselectable"
-      style="width: 260px; height: 100%;"
+      style="min-width: 230px; height: 100%;"
     >
-      <div class="menu-list">
-        <DatabaseMenu
-          v-for="database in databases" :key="database"
+      <div class="is-flex" style="padding: 0.25rem">
+        <Database
+          :database="database"
+          @change="handleDatabaseChange"
+        />
+
+        <div style="width: 0.25rem"></div>
+
+        <Schema
+          :schema="schema"
+          :database="database"
+          @change="handleSchemaChange"
+        />
+      </div>
+
+      <div
+        v-if="isLoading"
+        class="button is-fullwidth is-loading is-large is-text"
+      ></div>
+
+      <div v-else class="menu-list">
+        <div style="text-align: center; width: 100%; margin-top: 1rem" v-if="noTables">
+          无数据表
+        </div>
+        <TableMenu
+          v-for="table in tables" :key="table"
+          :table="table"
+          :schema="schema"
           :database="database"
         />
       </div>
     </div>
-
     <div class="is-flex-auto">
       <router-view/>
     </div>
   </div>
-  <div v-else>
-    <div class="loading"></div>
-  </div>
 </template>
 
 <script>
-import Dependencies from '@/core/runtime'
+import runtime from '@/core/runtime'
 
 import pg from '@/api/postgres'
-import DatabaseMenu from './DatabaseMenu'
+import Schema from './menus/Schema'
+import Database from './menus/Database'
+import TableMenu from './menus/TableMenu'
 
 export default {
   name: 'Postgres',
 
   components: {
-    DatabaseMenu
+    Schema,
+    Database,
+    TableMenu
   },
 
   props: {
@@ -43,34 +67,76 @@ export default {
 
   data () {
     return {
-      isLoading: false,
-
+      tables: [],
       databases: [],
-      database: null
+      isLoading: false,
+    }
+  },
+
+  computed: {
+    schema () {
+      return this.$route.query.schema
+    },
+
+    database () {
+      return this.$route.query.database
+    },
+
+    databaseSchema () {
+      return this.database + this.schema
+    },
+
+    noTables () {
+      return !this.isLoading && this.tables.length === 0
     }
   },
 
   methods: {
-    async getDatabases () {
-      this.databases = await pg.databases()
+    handleSchemaChange (schema) {
+      this.$router.push({
+        name: 'postgres',
+        params: {
+          connectionId: this.connectionId
+        },
+        query: {
+          schema,
+          database: this.database,
+        }
+      })
+    },
+
+    handleDatabaseChange (database) {
+      this.$router.push({
+        name: 'postgres',
+        params: {
+          connectionId: this.connectionId
+        },
+        query: {
+          database,
+          schema: 'public',
+        }
+      })
     }
   },
 
   watch: {
     connectionId: {
       immediate: true,
+      handler () {
+        pg.setConnectionId(this.connectionId)
+      }
+    },
+
+    databaseSchema: {
+      immediate: true,
       async handler () {
         this.isLoading = true
-        pg.setConnectionId(this.connectionId)
 
         try {
-          await this.getDatabases()
+          this.tables = await pg.tables(this.database, this.schema)
         } catch (e) {
-          this.$router.push({
-            name: 'connections'
-          })
-
-          Dependencies.notification.error('数据库连接失败')
+          runtime.notification.error('数据库连接失败')
+          this.$router.go(-1)
         } finally {
           this.isLoading = false
         }

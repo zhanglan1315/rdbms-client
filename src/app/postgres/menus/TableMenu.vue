@@ -5,7 +5,7 @@
         :class="{'is-active': isSelected}"
         @click="handleClick"
       >
-        <div style="width: 3.75rem"></div>
+        <div style="width: 0.75rem"></div>
 
         <span class="icon">
           <i class="iconfont icon-table"></i>
@@ -46,7 +46,7 @@ export default {
 
   computed: {
     isSelected () {
-      const { table, schema, database } = this.$route.params
+      const { table, schema, database } = this.$route.query
 
       return table === this.table &&
         schema === this.schema &&
@@ -59,7 +59,7 @@ export default {
       this.isActived = !this.isActived
       this.$router.push({
         name: 'postgres table',
-        params: {
+        query: {
           table: this.table,
           schema: this.schema,
           database: this.database

@@ -1,48 +1,45 @@
 <template>
-  <div class="is-flex">
-    <div class="is-flex-auto"></div>
-    <div class="field has-addons">
-      <p class="control">
-        <a class="button" @click="changePage(1)">
-          <span class="icon is-small">
-            <i class="iconfont icon-arrow-double-left"></i>
-          </span>
-        </a>
-      </p>
-      <p class="control">
-        <a class="button" @click="changePage(page - 1)">
-          <span class="icon is-small">
-            <i class="iconfont icon-arrow-left"></i>
-          </span>
-        </a>
-      </p>
+  <div class="field has-addons is-marginless">
+    <p class="control">
+      <a class="button" @click="changePage(1)">
+        <span class="icon is-small">
+          <i class="iconfont icon-arrow-double-left"></i>
+        </span>
+      </a>
+    </p>
+    <p class="control">
+      <a class="button" @click="changePage(page - 1)">
+        <span class="icon is-small">
+          <i class="iconfont icon-arrow-left"></i>
+        </span>
+      </a>
+    </p>
 
-      <p class="control">
-        <input
-          type="text"
-          class="input"
-          style="width: 56px; text-align: center"
-          :value="page"
-          @keypress.enter="handleInputEnter"
-        >
-      </p>
+    <p class="control">
+      <input
+        type="text"
+        class="input"
+        style="width: 56px; text-align: center"
+        :value="page"
+        @keypress.enter="handleInputEnter"
+      >
+    </p>
 
-      <p class="control">
-        <a class="button" @click="changePage(page + 1)">
-          <span class="icon is-small">
-            <i class="iconfont icon-arrow-right "></i>
-          </span>
-        </a>
-      </p>
+    <p class="control">
+      <a class="button" @click="changePage(page + 1)">
+        <span class="icon is-small">
+          <i class="iconfont icon-arrow-right "></i>
+        </span>
+      </a>
+    </p>
 
-      <p class="control">
-        <a class="button" @click="changePage(lastPage)">
-          <span class="icon is-small">
-            <i class="iconfont icon-arrow-double-right "></i>
-          </span>
-        </a>
-      </p>
-    </div>
+    <p class="control">
+      <a class="button" @click="changePage(lastPage)">
+        <span class="icon is-small">
+          <i class="iconfont icon-arrow-double-right "></i>
+        </span>
+      </a>
+    </p>
   </div>
 </template>
 

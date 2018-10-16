@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="!isLoading"
-    class="full-container is-flex is-flex-column"
-  >
+  <div class="full-container is-flex is-flex-column">
     <div class="tabs is-marginless">
       <ul>
         <li class="is-active">
@@ -12,18 +9,37 @@
     </div>
 
     <div class="is-flex-auto" style="padding: 0.5rem">
-      <TableView :dataSource="dataSource"/>
+      <div class="table-container">
+        <TableView
+          v-if="!isLoading"
+          :data="dataSource.data"
+          :columns="dataSource.columns"
+        ></TableView>
+      </div>
     </div>
 
-    <div style="padding: 0.5rem; padding-top: 0;">
+    <div
+      class="is-flex"
+      style="padding: 0 0.5rem 0.5rem 0.5rem; align-items: center;"
+    >
       <Pagination
-        v-bind="dataSource"
+        :page="dataSource.page"
+        :total="dataSource.total"
+        :perPage="dataSource.perPage"
         @change-page="handleChangePage"
       />
+
+      <span style="margin-left: 0.5rem">
+        {{dataSource.time}}ms
+      </span>
+
+      <div class="is-flex-auto"></div>
+
+      <span>
+        {{ dataSource.data.length }} / {{dataSource.total}}
+      </span>
+
     </div>
-  </div>
-  <div v-else>
-    <div class="loading"></div>
   </div>
 </template>
 
@@ -38,13 +54,6 @@ export default {
   components: {
     TableView,
     Pagination
-  },
-
-  props: {
-    table: String,
-    schema: String,
-    database: String,
-    connectionId: {}
   },
 
   data () {
@@ -63,6 +72,22 @@ export default {
   computed: {
     isChanged () {
       return this.connectionId + this.database + this.schema + this.table
+    },
+
+    table () {
+      return this.$route.query.table
+    },
+
+    schema () {
+      return this.$route.query.schema
+    },
+
+    database () {
+      return this.$route.query.database
+    },
+
+    connectionId () {
+      return this.$route.params.connectionId
     }
   },
 
@@ -83,6 +108,7 @@ export default {
     },
 
     handleInitialize () {
+      this.page = 1
       this.search()
     },
 
