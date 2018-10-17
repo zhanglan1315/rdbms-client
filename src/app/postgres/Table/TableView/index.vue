@@ -55,15 +55,16 @@
         <input
           type="text"
           class="input is-roundless"
-          :class="{'is-danger': isQueryError}"
           style="padding-left: 2.8rem"
-          v-model="where"
-          @keypress.enter="search"
           placeholder="where condition"
+          :class="{'is-danger': isQueryError}"
+          v-model="where"
+          @keypress.enter="handleQuery"
         >
         <span
           class="icon is-left"
-          style="width: 3rem">
+          style="width: 3rem"
+        >
           SQL
         </span>
       </p>
@@ -208,11 +209,6 @@ export default {
   },
 
   methods: {
-    handleRefresh () {
-      this.page = 1
-      this.search()
-    },
-
     handleInitialize () {
       this.page = 1
       this.search()
@@ -220,6 +216,16 @@ export default {
 
     handleChangePage (page) {
       this.page = page
+      this.search()
+    },
+
+    handleQuery () {
+      this.page = 1
+      this.search()
+    },
+
+    handleRefresh () {
+      this.page = 1
       this.search()
     },
 

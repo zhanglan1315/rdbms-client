@@ -14,7 +14,7 @@
     <div
       class="dropdown-menu"
       :class="{'is-active': isShowDropdown}"
-      style="min-width: 230px;"
+      style="min-width: 220px;"
     >
       <div class="dropdown-content">
         <span
