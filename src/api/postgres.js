@@ -55,12 +55,19 @@ export default {
     return response.data
   },
 
-  async table (params) {
-    const response = await axios.post('postgres/table', {
+  async tableSearch (params) {
+    const response = await axios.post('postgres/table/search', {
       connectionId,
       ...params
     })
 
     return response.data
+  },
+
+  tableUpdate (params) {
+    return axios.post('postgres/table/update', {
+      connectionId,
+      ...params
+    })
   }
 }

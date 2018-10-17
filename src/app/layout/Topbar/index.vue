@@ -11,6 +11,15 @@
     </div>
 
     <div class="level-right">
+      <p
+        v-if="!productionTip"
+        class="level-item"
+      >
+        <a @click="$router.push('/test')">
+          Test
+        </a>
+      </p>
+
       <template v-if="!isVerified">
         <p class="level-item">
           <a @click="$router.push({name: 'register'})">注册</a>
@@ -31,10 +40,17 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import storage from 'store'
 
 export default {
   name: 'AppTopbar',
+
+  data () {
+    return {
+      productionTip: Vue.productionTip
+    }
+  },
 
   computed: {
     isVerified () {

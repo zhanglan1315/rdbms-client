@@ -5,11 +5,13 @@
         :class="{'is-active': isSelected}"
         @click="handleClick"
       >
-        <div style="width: 0.75rem"></div>
+        <div style="width: 1rem"></div>
 
         <span class="icon">
           <i class="iconfont icon-table"></i>
         </span>
+
+        <div style="width: 0.25rem"></div>
 
         <span>{{table}}</span>
 

@@ -1,31 +1,27 @@
 <template>
   <a
     style="flex: 1"
-    class="button is-light"
+    class="button is-white"
     @click="!isLoading && (isShowDropdown = !isShowDropdown)"
     v-clickoutside="() => isShowDropdown = false"
   >
-
     <span class="icon">
       <span class="iconfont icon-storage"></span>
     </span>
-
     <span>{{schema}}</span>
-
-    <span
-      v-if="isLoading"
-      class="button is-text is-loading"
-    ></span>
-
     <div
       class="dropdown-menu is-right"
-      :class="{'is-active': !isLoading && isShowDropdown}"
+      :class="{'is-active': isShowDropdown}"
       style="min-width: 230px;"
     >
       <div class="dropdown-content">
+        <span
+          v-if="isLoading"
+          class="button is-text is-loading"
+        ></span>
         <a
           v-for="scm in schemas" :key="scm"
-          class="button is-light is-fullwidth"
+          class="button is-white is-fullwidth"
           @click="$emit('change', scm)"
         >
           <span class="icon">
@@ -42,6 +38,8 @@
 import pg from '@/api/postgres'
 
 export default {
+  name: 'PostgresSchemaMenu',
+
   props: {
     schema: String,
     database: String

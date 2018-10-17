@@ -4,9 +4,12 @@
   >
     <div
       class="menu-container is-unselectable"
-      style="min-width: 240px; height: 100%;"
+      style="min-width: 230px; height: 100%;"
     >
-      <div class="is-flex" style="padding: 0.25rem">
+      <div
+        class="is-flex has-border-bottom"
+        style="padding: 0.25rem"
+      >
         <Database
           :database="database"
           @change="handleDatabaseChange"
