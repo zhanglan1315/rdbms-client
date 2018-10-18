@@ -276,6 +276,8 @@ export default {
       this.modifiers = {}
       this.isLoading = true
       this.isQueryError = false
+      this.dataSource.data = []
+      this.dataSource.columns = []
 
       try {
         this.dataSource = await pg.tableSearch(this.params)
