@@ -1,8 +1,8 @@
 <template>
   <div class="is-flex-auto is-flex is-flex-column">
     <div
-      class="has-border-bottom"
-      style="height: 45px; display: flex; padding: 0.25rem 0.25rem 0.20rem 0.25rem"
+      class="is-flex has-border-bottom"
+      style="height: 45px; padding: 0.25rem;"
     >
       <div class="field has-addons is-marginless">
         <div class="control">
@@ -28,7 +28,10 @@
         </div>
       </div>
 
-      <div style="width: 0.5rem"></div>
+      <div
+        class="has-background-grey-lighter"
+        style="width: 1px; margin: 0.25rem"
+      ></div>
 
       <div class="field has-addons is-marginless">
         <div class="control">
