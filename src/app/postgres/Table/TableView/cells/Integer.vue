@@ -39,7 +39,7 @@ export default {
       this.input = undefined
       this.$nextTick(() => this.input = value)
 
-      this.$emit('change', this.input)
+      this.$emit('change', value)
     }
   },
 
