@@ -6,6 +6,7 @@
     :class="klass"
     @blur="handleBlur"
     @focus="handleFocus"
+    @dblclick="$emit('dblclick')"
     @keypress.enter="handleCancel"
   />
 </template>
@@ -44,6 +45,7 @@ export default {
     },
 
     handleFocus (event) {
+      this.$emit('focus', event)
       this.isFocused = true
       const range = document.createRange()
       const selection = window.getSelection()

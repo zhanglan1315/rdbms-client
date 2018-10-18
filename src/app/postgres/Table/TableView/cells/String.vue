@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import EditableCell from '@/components/EditableCell'
+import EditableCell from './BasicCell'
 
 export default {
   components: {
@@ -28,12 +28,12 @@ export default {
   methods: {
     handleChange (value) {
       if (value === '' && this.value === null) {
-        value = null
+        this.input = this.value
+      } else {
+        this.input = value
       }
-      this.$emit('change', value)
 
-      this.input = undefined
-      this.$nextTick(() => this.input = value)
+      this.$emit('change', this.input)
     }
   },
 

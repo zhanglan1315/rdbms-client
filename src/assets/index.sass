@@ -80,3 +80,18 @@
       padding-left: 0
       padding-right: 0.5rem
       margin-bottom: 0.5rem
+
+// @app/postgres/TableView
+.table
+  th,
+  td
+    &.is-null
+      text-align: center
+      &:focus
+        text-align: left
+        font-color: $text
+        &::after
+          display: none
+      &::after
+        content: '<NULL>'
+        color: $grey

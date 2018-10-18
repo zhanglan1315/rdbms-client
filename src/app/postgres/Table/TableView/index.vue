@@ -30,7 +30,7 @@
 
       <div
         class="has-background-grey-lighter"
-        style="width: 1px; margin: 0.25rem"
+        style="width: 1px; margin: 0.1rem"
       ></div>
 
       <div class="field has-addons is-marginless">
@@ -44,6 +44,23 @@
               <i class="iconfont icon-save"></i>
             </span>
             <span>保存</span>
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="has-background-grey-lighter"
+        style="width: 1px; margin: 0.1rem"
+      ></div>
+
+      <div class="field has-addons is-marginless">
+        <div class="control">
+          <a
+            class="button is-white"
+            :disabled="!hasModifiers"
+            @click="handleSaveModifiers"
+          >
+            <span>设为 NULL</span>
           </a>
         </div>
       </div>
