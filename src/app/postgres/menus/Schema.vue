@@ -41,6 +41,7 @@ export default {
   name: 'PostgresSchemaMenu',
 
   props: {
+    params: Object,
     schema: String,
     database: String
   },
@@ -57,11 +58,9 @@ export default {
     async isShowDropdown (show) {
       if (show) {
         this.isLoading = true
-        try {
-          this.schemas = await pg.schemas(this.database)
-        } finally {
-          this.isLoading = false
-        }
+        pg.schemas(this.params)
+          .then(response => this.schemas = response.data)
+          .finally(() => this.isLoading = false)
       } else {
         this.schemas = []
       }

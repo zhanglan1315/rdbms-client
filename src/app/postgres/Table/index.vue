@@ -16,7 +16,7 @@ export default {
   name: 'PostgresTable',
 
   components: {
-    TableView,
+    TableView
   },
 
   computed: {

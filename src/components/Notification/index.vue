@@ -4,6 +4,7 @@
       v-for="item in items" :key="item.id"
       :is="item.component"
       v-bind="item.props"
+      @close="removeItem(item.id)"
     />
   </div>
 </template>
@@ -31,22 +32,27 @@ export default {
       })
 
       setTimeout(() => {
-        this.items.splice(items.findIndex(item => item.id === id), 1)
+        this.removeItem(id)
       }, context.duration || 5000)
     },
 
-    success (text) {
+    success (text, duration) {
       this.open({
         component: Notification,
         props: { text, icon: 'success', color: 'success' }
       })
     },
 
-    error (text) {
+    error (text, duration) {
       this.open({
+        duration,
         component: Notification,
         props: { text, icon: 'error', color: 'danger' }
       })
+    },
+
+    removeItem (id) {
+      this.items.splice(this.items.findIndex(item => item.id === id), 1)
     }
   }
 }

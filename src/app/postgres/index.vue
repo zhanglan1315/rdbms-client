@@ -1,59 +1,61 @@
 <template>
-  <div
-    class="full-container is-flex"
-  >
-    <div
-      class="menu-container is-unselectable"
-      style="min-width: 230px; height: 100%;"
-    >
+  <div class="full-container is-flex is-flex-column">
+    <Notifications ref="notifications"/>
+    <div class="full-container is-flex">
       <div
-        class="is-flex has-border-bottom"
-        style="padding: 0.25rem"
+        class="menu-container is-unselectable"
+        style="min-width: 230px; height: 100%;"
       >
-        <Database
-          :database="database"
-          @change="handleDatabaseChange"
-        />
+        <div
+          class="is-flex has-border-bottom"
+          style="padding: 0.25rem"
+        >
+          <Database
+            :database="database"
+            :params="params"
+            @change="handleDatabaseChange"
+          />
 
-        <div style="width: 0.25rem"></div>
+          <div style="width: 0.25rem"></div>
 
-        <Schema
-          :schema="schema"
-          :database="database"
-          @change="handleSchemaChange"
-        />
-      </div>
-
-      <div
-        v-if="isLoading"
-        class="button is-fullwidth is-loading is-large is-text"
-      ></div>
-
-      <div v-else class="menu-list">
-        <div style="text-align: center; width: 100%; margin-top: 1rem" v-if="noTables">
-          无数据表
+          <Schema
+            :schema="schema"
+            :database="database"
+            :params="params"
+            @change="handleSchemaChange"
+          />
         </div>
-        <TableMenu
-          v-for="table in tables" :key="table"
-          :table="table"
-          :schema="schema"
-          :database="database"
-        />
+
+        <div
+          v-if="isLoading"
+          class="button is-fullwidth is-loading is-large is-text"
+        ></div>
+
+        <div v-else class="menu-list">
+          <div style="text-align: center; width: 100%; margin-top: 1rem" v-if="noTables">
+            无数据表
+          </div>
+          <TableMenu
+            v-for="table in tables" :key="table"
+            :table="table"
+            :schema="schema"
+            :database="database"
+          />
+        </div>
       </div>
-    </div>
-    <div class="is-flex-auto">
-      <router-view/>
+      <div class="is-flex-auto">
+        <router-view/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import runtime from '@/core/runtime'
-
 import pg from '@/api/postgres'
 import Schema from './menus/Schema'
 import Database from './menus/Database'
 import TableMenu from './menus/TableMenu'
+import Notifications from '@/components/Notification'
 
 export default {
   name: 'Postgres',
@@ -61,7 +63,8 @@ export default {
   components: {
     Schema,
     Database,
-    TableMenu
+    TableMenu,
+    Notifications
   },
 
   props: {
@@ -85,8 +88,20 @@ export default {
       return this.$route.query.database
     },
 
-    databaseSchema () {
-      return this.database + this.schema
+    key () {
+      return this.connection + this.database + this.schema
+    },
+
+    params () {
+      return {
+        schema: this.schema,
+        database: this.database,
+        connectionId: this.connectionId
+      }
+    },
+
+    notifications () {
+      return this.$refs.notifications
     },
 
     noTables () {
@@ -123,26 +138,15 @@ export default {
   },
 
   watch: {
-    connectionId: {
-      immediate: true,
-      handler () {
-        pg.setConnectionId(this.connectionId)
-      }
-    },
-
-    databaseSchema: {
+    key: {
       immediate: true,
       async handler () {
         this.isLoading = true
 
-        try {
-          this.tables = await pg.tables(this.database, this.schema)
-        } catch (e) {
-          runtime.notification.error('数据库连接失败')
-          this.$router.go(-1)
-        } finally {
-          this.isLoading = false
-        }
+        pg.tables(this.params)
+          .then(response => this.tables = response.data)
+          .catch(() => this.notifications.error('数据库连接失败'))
+          .finally(() => this.isLoading = false)
       }
     }
   }

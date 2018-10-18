@@ -1,73 +1,27 @@
 import axios from '@/core/axios'
 
-let connectionId = null
-
 export default {
-  setConnectionId (id) {
-    connectionId = id
+  test (params) {
+    return axios.post('postgres/test', params)
   },
 
-  async test (params) {
-    await axios.post('postgres/test', params)
+  databases (params) {
+    return axios.post('postgres/databases', params)
   },
 
-  async connect () {
-    await axios.post('postgres/connect', {
-      connectionId
-    })
+  schemas (params) {
+    return axios.post('postgres/schemas', params)
   },
 
-  async databases () {
-    const response = await axios.post('postgres/databases', {
-      connectionId
-    })
-
-    return response.data
+  tables (params) {
+    return axios.post('postgres/tables', params)
   },
 
-  async schemas (database) {
-    const response = await axios.post('postgres/schemas', {
-      database,
-      connectionId
-    })
-
-    return response.data
-  },
-
-  async tables (database, schema) {
-    const response = await axios.post('postgres/tables', {
-      schema,
-      database,
-      connectionId
-    })
-
-    return response.data
-  },
-
-  async select (database, schema, sql) {
-    const response = await axios.post('postgres/select', {
-      sql,
-      schema,
-      database,
-      connectionId
-    })
-
-    return response.data
-  },
-
-  async tableSearch (params) {
-    const response = await axios.post('postgres/table/search', {
-      connectionId,
-      ...params
-    })
-
-    return response.data
+  tableSearch (params) {
+    return axios.post('postgres/table/search', params)
   },
 
   tableUpdate (params) {
-    return axios.post('postgres/table/update', {
-      connectionId,
-      ...params
-    })
+    return axios.post('postgres/table/update', params)
   }
 }

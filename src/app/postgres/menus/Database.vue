@@ -9,12 +9,12 @@
       <span class="iconfont icon-storage"></span>
     </span>
 
-    <span>{{database}}</span>
+    <span>{{params.database}}</span>
 
     <div
       class="dropdown-menu"
-      :class="{'is-active': isShowDropdown}"
       style="min-width: 220px;"
+      :class="{'is-active': isShowDropdown}"
     >
       <div class="dropdown-content">
         <span
@@ -44,7 +44,7 @@ export default {
   name: 'PostgresDatabaseMenu',
 
   props: {
-    database: String
+    params: Object
   },
 
   data () {
@@ -59,11 +59,9 @@ export default {
     async isShowDropdown (show) {
       if (show) {
         this.isLoading = true
-        try {
-          this.databases = await pg.databases()
-        } finally {
-          this.isLoading = false
-        }
+        pg.databases(this.params)
+          .then(response => this.databases = response.data)
+          .finally(() => this.isLoading = false)
       } else {
         this.databases = []
       }

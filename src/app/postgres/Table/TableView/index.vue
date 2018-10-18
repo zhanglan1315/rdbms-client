@@ -9,6 +9,7 @@
           <a
             class="button is-white"
             @click="handleRefresh"
+            :disabled="isLoading"
           >
             <span class="icon">
               <i class="iconfont icon-refresh"></i>
@@ -46,6 +47,7 @@
         <div class="control">
           <a
             class="button is-white"
+            :class="{'is-loading': isUpdating}"
             :disabled="!hasModifiers"
             @click="handleSaveModifiers"
           >
@@ -62,6 +64,8 @@
         style="width: 1px; margin: 0.1rem"
       ></div>
     </div>
+
+    <Notifications ref="notifications"/>
 
     <div
       v-show="isQueryShow"
@@ -150,6 +154,7 @@ import string from './cells/String'
 import integer from './cells/Integer'
 import Default from './cells/Default'
 import Pagination from '@/components/Pagination'
+import Notifications from '@/components/Notification'
 
 const cells = {
   string,
@@ -161,7 +166,8 @@ export default {
   name: 'PostgresTableView',
 
   components: {
-    Pagination
+    Pagination,
+    Notifications
   },
 
   props: {
@@ -180,6 +186,7 @@ export default {
       modifiers: {},
       focusedCell: null,
       isLoading: false,
+      isUpdating: false,
       isQueryShow: false,
       isQueryError: false,
       dataSource: {
@@ -205,6 +212,7 @@ export default {
         perPage: this.perPage,
         database: this.database,
         where: this.isQueryShow && this.where,
+        connectionId: this.connectionId
       }
     },
 
@@ -224,6 +232,10 @@ export default {
 
     hasModifiers () {
       return Object.keys(this.modifiers).length
+    },
+
+    notifications () {
+      return this.$refs.notifications
     }
   },
 
@@ -302,24 +314,29 @@ export default {
         database: this.database,
         modifiers: this.modifiers
       }
+      this.isUpdating = true
       pg.tableUpdate(params)
         .then(response => this.search())
+        .catch(error => {
+          const message = error.response.data.message
+          this.notifications.error(message, 1000000)
+        })
+        .finally(() => this.isUpdating = false)
     },
 
-    async search () {
+    search () {
+      if (this.isLoading) return
+
       this.modifiers = {}
       this.isLoading = true
       this.isQueryError = false
       this.dataSource.data = []
       this.dataSource.columns = []
 
-      try {
-        this.dataSource = await pg.tableSearch(this.params)
-      } catch (e) {
-        this.isQueryError = true
-      } finally {
-        this.isLoading = false
-      }
+      return pg.tableSearch(this.params)
+        .then(response => this.dataSource = response.data)
+        .catch(error => this.notifications.error(error.response.data.message, 100000))
+        .finally(() => this.isLoading = false)
     },
 
     transColumnType (type) {
