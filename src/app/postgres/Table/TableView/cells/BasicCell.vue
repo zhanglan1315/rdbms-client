@@ -1,10 +1,11 @@
 <template>
   <EditableCell
+    :class="value === null && 'is-null'"
     :value="value"
     v-bind="$attrs"
-    v-on="$listeners"
-    @dblclick="handleDoubleClick"
-    :class="value === null && 'is-null'"
+    @blur="$emit('blur')"
+    @focus.stop="handleFocus"
+    @change="$emit('change', $event)"
   />
 </template>
 
@@ -21,8 +22,12 @@ export default {
   },
 
   methods: {
-    handleDoubleClick () {
-      console.log(100)
+    setNull () {
+      this.$emit('change', null)
+    },
+
+    handleFocus () {
+      this.$emit('focus', this)
     }
   }
 }

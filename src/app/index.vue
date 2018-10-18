@@ -23,9 +23,9 @@
 <script>
 import dependencies from '@/core/runtime'
 
-import Topbar from './layout/Topbar'
-import Notification from './layout/Notification'
 import token from './bootstrap/token'
+import Topbar from './layout/Topbar'
+import Notification from '@/components/Notification'
 
 export default {
   name: 'App',

@@ -3,6 +3,7 @@
     :value="input"
     @change="handleChange"
     :is-changed="value !== input"
+    v-on="$listeners"
     ref="cell"
   />
 </template>
@@ -39,7 +40,7 @@ export default {
       this.input = undefined
       this.$nextTick(() => this.input = value)
 
-      this.$emit('change', value)
+      this.$emit('modify', value)
     }
   },
 

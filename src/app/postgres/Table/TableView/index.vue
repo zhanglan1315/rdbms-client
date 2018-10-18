@@ -37,6 +37,15 @@
         <div class="control">
           <a
             class="button is-white"
+            :disabled="!focusedCell"
+            @click="handleSetNull"
+          >
+            <span>设为 NULL</span>
+          </a>
+        </div>
+        <div class="control">
+          <a
+            class="button is-white"
             :disabled="!hasModifiers"
             @click="handleSaveModifiers"
           >
@@ -52,18 +61,6 @@
         class="has-background-grey-lighter"
         style="width: 1px; margin: 0.1rem"
       ></div>
-
-      <div class="field has-addons is-marginless">
-        <div class="control">
-          <a
-            class="button is-white"
-            :disabled="!hasModifiers"
-            @click="handleSaveModifiers"
-          >
-            <span>设为 NULL</span>
-          </a>
-        </div>
-      </div>
     </div>
 
     <div
@@ -109,7 +106,9 @@
                 v-for="column in displayColumns" :key="column.name"
                 :is="cells[column.type]"
                 :value="datum[column.key]"
-                @change="handleModify(datum, column, $event)"
+                @modify="handleModify(datum, column, $event)"
+                @focus="handleCellFocus"
+                @blur="handleCellBlur"
               />
             </tr>
           </tbody>
@@ -179,10 +178,10 @@ export default {
       where: '',
       perPage: 50,
       modifiers: {},
+      focusedCell: null,
       isLoading: false,
       isQueryShow: false,
       isQueryError: false,
-      queryParams: [],
       dataSource: {
         page: 1,
         data: [],
@@ -247,6 +246,24 @@ export default {
     handleRefresh () {
       this.page = 1
       this.search()
+    },
+
+    handleCellFocus (cell) {
+      this.focusedCell = cell
+    },
+
+    handleCellBlur () {
+      const uid = this.focusedCell._uid
+
+      setTimeout(() => {
+        if (uid === this.focusedCell._uid) {
+          this.focusedCell = null
+        }
+      }, 1000)
+    },
+
+    handleSetNull () {
+      this.focusedCell.setNull()
     },
 
     handleModify (data, column, value) {

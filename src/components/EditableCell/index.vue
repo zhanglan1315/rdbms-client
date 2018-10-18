@@ -35,6 +35,7 @@ export default {
 
   methods: {
     handleBlur (event) {
+      this.$emit('blur')
       const range = document.createRange()
       const selection = window.getSelection()
       range.selectNodeContents(event.target)

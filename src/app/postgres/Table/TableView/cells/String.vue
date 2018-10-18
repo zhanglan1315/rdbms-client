@@ -1,8 +1,9 @@
 <template>
   <EditableCell
     :value="input"
-    @change="handleChange"
     :is-changed="value !== input"
+    @change="handleChange"
+    v-on="$listeners"
     ref="cell"
   />
 </template>
@@ -33,7 +34,8 @@ export default {
         this.input = value
       }
 
-      this.$emit('change', this.input)
+      // console.log(this.value, this.input)
+      this.$emit('modify', this.input)
     }
   },
 
