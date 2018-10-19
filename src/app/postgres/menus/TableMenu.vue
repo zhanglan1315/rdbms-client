@@ -59,14 +59,7 @@ export default {
   methods: {
     async handleClick () {
       this.isActived = !this.isActived
-      this.$router.push({
-        name: 'postgres table',
-        query: {
-          table: this.table,
-          schema: this.schema,
-          database: this.database
-        }
-      })
+      this.$emit('click', this.table)
     }
   }
 }

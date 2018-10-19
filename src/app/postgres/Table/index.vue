@@ -1,5 +1,8 @@
 <template>
-  <div class="full-container is-flex is-flex-column">
+  <div
+    v-if="!isDestroyed"
+    class="is-flex-auto is-flex is-flex-column"
+  >
     <TableView
       :table="table"
       :schema="schema"
@@ -15,8 +18,18 @@ import TableView from './TableView'
 export default {
   name: 'PostgresTable',
 
+  props: {
+    tabs: Array
+  },
+
   components: {
     TableView
+  },
+
+  data () {
+    return {
+      isDestroyed: false
+    }
   },
 
   computed: {
@@ -35,6 +48,14 @@ export default {
     connectionId () {
       return this.$route.params.connectionId
     }
+  },
+
+  created () {
+    this.$emit('created', {
+      vnode: this,
+      name: this.table,
+      fullPath: this.$route.fullPath
+    })
   }
 }
 </script>

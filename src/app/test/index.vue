@@ -1,5 +1,9 @@
 <template>
   <section class="section">
+    <a @click="test++">1234123</a>
+    <keep-alive>
+    <div :key="test">{{test}}</div>
+    </keep-alive>
     <div class="container">
       <table class="table is-bordered">
         <thead>
@@ -25,6 +29,12 @@ import TableCell from '@/components/EditableCell'
 export default {
   components: {
     TableCell
+  },
+
+  data () {
+    return {
+      test: 0
+    }
   }
 }
 </script>

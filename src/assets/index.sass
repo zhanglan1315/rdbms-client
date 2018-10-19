@@ -5,6 +5,10 @@
 @import './table'
 @import './menus'
 @import './helper'
+@import '~animate.css'
+
+.animated
+  animation-duration: .333s
 
 .is-unselectable
   -webkit-user-select: none // Chrome all  Safari all 
@@ -100,3 +104,21 @@
       &::after
         content: '<NULL>'
         color: $grey
+
+// @app/postgres/index
+
+.postgres
+  .tabs
+    &.is-boxed
+      a
+        height: 45px
+        border-top: none
+        border-radius: 0
+      li
+        &:first-child
+          a
+            border-left: none
+        &.is-active
+          a
+            border-bottom-width: 1px
+            border-bottom-color: $border

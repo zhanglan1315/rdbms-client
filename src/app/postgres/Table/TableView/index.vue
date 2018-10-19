@@ -75,8 +75,8 @@
       <p class="control has-icons-left">
         <input
           type="text"
-          class="input is-roundless"
-          style="padding-left: 2.8rem"
+          class="input is-roundless is-medium"
+          style="padding-left: 3.8rem;"
           placeholder="where condition"
           :class="{'is-danger': isQueryError}"
           v-model="where"
@@ -84,18 +84,21 @@
         >
         <span
           class="icon is-left"
-          style="width: 3rem"
+          style="width: 4rem"
         >
           SQL
         </span>
       </p>
     </div>
 
-    <div class="is-flex-auto" style="margin: 0.5rem;">
-      <div class="table-container">
+    <div
+      class="is-flex-auto has-border-bottom"
+      style="overflow: auto; margin-bottom: 0.5rem"
+    >
         <table
           v-if="!isLoading"
           class="table is-bordered"
+          style="margin: 0.5rem; margin-right: 0.5rem"
         >
           <thead>
             <tr>
@@ -124,7 +127,6 @@
         >
           <div class="button is-text is-loading is-large"></div>
         </div>
-      </div>
     </div>
 
     <div
@@ -275,7 +277,7 @@ export default {
     },
 
     handleSetNull () {
-      this.focusedCell.setNull()
+      this.focusedCell && this.focusedCell.setNull()
     },
 
     handleModify (data, column, value) {
@@ -312,7 +314,8 @@ export default {
         table: this.table,
         schema: this.schema,
         database: this.database,
-        modifiers: this.modifiers
+        modifiers: this.modifiers,
+        connectionId: this.connectionId
       }
       this.isUpdating = true
       pg.tableUpdate(params)
@@ -352,22 +355,17 @@ export default {
     }
   },
 
-  watch: {
-    key: {
-      immediate: true,
-      handler () {
-        if (
-          this.table === undefined ||
-          this.schema === undefined ||
-          this.database === undefined ||
-          this.connectionId === undefined
-        ) {
-          return
-        }
-
-        this.handleInitialize()
-      }
+  created () {
+    if (
+      this.table === undefined ||
+      this.schema === undefined ||
+      this.database === undefined ||
+      this.connectionId === undefined
+    ) {
+      return
     }
+
+    this.handleInitialize()
   }
 }
 </script>
