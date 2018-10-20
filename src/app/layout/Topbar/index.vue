@@ -16,7 +16,7 @@
         class="level-item"
       >
         <a @click="$router.push('/test')">
-          Test
+          测试
         </a>
       </p>
 

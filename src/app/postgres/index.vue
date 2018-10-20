@@ -24,6 +24,16 @@
             :params="params"
             @change="handleSchemaChange"
           />
+
+          <a
+            class="button is-white"
+            :disabled="isLoading"
+            @click="handleRefreshClick"
+          >
+            <span class="icon">
+              <i class="iconfont icon-refresh"></i>
+            </span>
+          </a>
         </div>
 
         <div
@@ -48,7 +58,7 @@
         </div>
       </div>
       <div class="postgres is-flex-auto is-flex is-flex-column">
-        <!-- <div
+        <div
           class="tabs is-boxed is-marginless"
           style="height: 45px"
         >
@@ -71,8 +81,8 @@
               </a>
             </li>
           </ul>
-        </div> -->
-        <keep-alive include="PostgresTable" max="5">
+        </div>
+        <keep-alive include="PostgresTable">
           <router-view
             :tabs="tabs"
             :key="$route.fullPath"
@@ -192,6 +202,10 @@ export default {
       this.$router.push(params)
     },
 
+    handleRefreshClick () {
+      this.isLoading || this.getTables()
+    },
+
     handleTabRemove (tab) {
       const index = this.tabs.findIndex(tb => tb.fullPath === tab.fullPath)
 
@@ -216,6 +230,15 @@ export default {
       this.tabs.push(tab)
     },
 
+    getTables () {
+      this.isLoading = true
+
+      pg.tables(this.params)
+        .then(response => this.tables = response.data)
+        .catch(() => this.notifications.error('数据库连接失败'))
+        .finally(() => this.isLoading = false)
+    },
+
     getTabByFullPath (fullPath) {
       return this.tabs.find(tab => tab.fullPath === fullPath)
     }
@@ -224,13 +247,8 @@ export default {
   watch: {
     key: {
       immediate: true,
-      async handler () {
-        this.isLoading = true
-
-        pg.tables(this.params)
-          .then(response => this.tables = response.data)
-          .catch(() => this.notifications.error('数据库连接失败'))
-          .finally(() => this.isLoading = false)
+      handler () {
+        this.getTables()
       }
     }
   },

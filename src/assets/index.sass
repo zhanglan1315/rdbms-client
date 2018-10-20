@@ -18,6 +18,7 @@
   user-select: none
 
 .dropdown-menu
+  min-width: calc(100%)
   &.is-active
     display: block
   &.is-right
@@ -28,6 +29,10 @@
       padding-bottom: $dropdown-content-offset
       padding-top: initial
       top: auto
+  .dropdown-item
+    text-alitn: left
+    padding-left: 1rem
+    padding-right: 1rem
 
 // @app/login
 .login-dialog

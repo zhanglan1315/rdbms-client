@@ -13,7 +13,6 @@
 
     <div
       class="dropdown-menu"
-      style="min-width: 220px;"
       :class="{'is-active': isShowDropdown}"
     >
       <div class="dropdown-content">
@@ -23,8 +22,7 @@
         ></span>
         <a
           v-for="db in databases" :key="db"
-          class="button is-white is-fullwidth"
-          style="text-align: left"
+          class="dropdown-item"
           @click="$emit('change', db)"
         >
           <span class="icon">

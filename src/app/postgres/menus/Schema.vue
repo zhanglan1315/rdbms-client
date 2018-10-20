@@ -10,18 +10,19 @@
     </span>
     <span>{{schema}}</span>
     <div
-      class="dropdown-menu is-right"
+      class="dropdown-menu"
       :class="{'is-active': isShowDropdown}"
-      style="min-width: 220px;"
     >
-      <div class="dropdown-content">
+      <div
+        class="dropdown-content"
+      >
         <span
           v-if="isLoading"
           class="button is-text is-loading"
         ></span>
         <a
           v-for="scm in schemas" :key="scm"
-          class="button is-white is-fullwidth"
+          class="dropdown-item"
           @click="$emit('change', scm)"
         >
           <span class="icon">
