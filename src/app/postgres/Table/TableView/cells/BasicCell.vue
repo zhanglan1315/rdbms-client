@@ -4,13 +4,17 @@
     :value="value"
     v-bind="$attrs"
     @blur="$emit('blur')"
+    @change="handleChange"
     @focus.stop="handleFocus"
-    @change="$emit('change', $event)"
   />
 </template>
 
 <script>
 import EditableCell from '@/components/EditableCell'
+
+const state = {
+  isSettingNull: false
+}
 
 export default {
   components: {
@@ -22,12 +26,20 @@ export default {
   },
 
   methods: {
-    setNull () {
-      this.$emit('change', null)
-    },
-
     handleFocus () {
       this.$emit('focus', this)
+    },
+
+    handleChange (value) {
+      state.isSettingNull || this.$emit('change', value)
+    },
+
+    setNull () {
+      state.isSettingNull = true
+      setTimeout(() => {
+        this.$emit('change', null)
+        state.isSettingNull = false
+      }, 0)
     }
   }
 }

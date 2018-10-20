@@ -1,9 +1,7 @@
 <template>
   <section class="section">
-    <a @click="test++">1234123</a>
-    <keep-alive>
-    <div :key="test">{{test}}</div>
-    </keep-alive>
+    <a @mousedown="handleMousedown">1234123</a>
+
     <div class="container">
       <table class="table is-bordered">
         <thead>
@@ -34,6 +32,12 @@ export default {
   data () {
     return {
       test: 0
+    }
+  },
+
+  methods: {
+    handleMousedown () {
+      console.log(1000)
     }
   }
 }

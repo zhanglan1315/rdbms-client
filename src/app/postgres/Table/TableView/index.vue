@@ -1,5 +1,5 @@
 <template>
-  <div class="is-flex-auto is-flex is-flex-column">
+  <div class="full-container is-flex is-flex-column">
     <div
       class="is-flex has-border-bottom"
       style="height: 45px; padding: 0.25rem;"
@@ -38,15 +38,6 @@
         <div class="control">
           <a
             class="button is-white"
-            :disabled="!focusedCell"
-            @click="handleSetNull"
-          >
-            <span>设为 NULL</span>
-          </a>
-        </div>
-        <div class="control">
-          <a
-            class="button is-white"
             :class="{'is-loading': isUpdating}"
             :disabled="!hasModifiers"
             @click="handleSaveModifiers"
@@ -55,6 +46,15 @@
               <i class="iconfont icon-save"></i>
             </span>
             <span>保存</span>
+          </a>
+        </div>
+        <div class="control">
+          <a
+            class="button is-white"
+            v-if="focusedCell"
+            @mousedown.left="handleSetNull"
+          >
+            <span>设为 NULL</span>
           </a>
         </div>
       </div>
@@ -184,7 +184,7 @@ export default {
       cells,
       page: 1,
       where: '',
-      perPage: 50,
+      perPage: 30,
       modifiers: {},
       focusedCell: null,
       isLoading: false,
@@ -267,17 +267,11 @@ export default {
     },
 
     handleCellBlur () {
-      const uid = this.focusedCell._uid
-
-      setTimeout(() => {
-        if (uid === this.focusedCell._uid) {
-          this.focusedCell = null
-        }
-      }, 1000)
+      this.focusedCell = null
     },
 
     handleSetNull () {
-      this.focusedCell && this.focusedCell.setNull()
+      this.focusedCell.setNull()
     },
 
     handleModify (data, column, value) {

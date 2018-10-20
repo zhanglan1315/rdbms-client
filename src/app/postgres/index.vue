@@ -11,8 +11,7 @@
           style="padding: 0.25rem"
         >
           <Database
-            :database="database"
-            :params="params"
+            :params="apiParams"
             @change="handleDatabaseChange"
           />
 
@@ -20,8 +19,7 @@
 
           <Schema
             :schema="schema"
-            :database="database"
-            :params="params"
+            :params="apiParams"
             @change="handleSchemaChange"
           />
 
@@ -57,45 +55,19 @@
           />
         </div>
       </div>
-      <div class="postgres is-flex-auto is-flex is-flex-column">
-        <div
-          class="tabs is-boxed is-marginless"
-          style="height: 45px"
-        >
-          <ul>
-            <li
-              v-for="tab in tabs" :key="tab.fullPath"
-              class="is-flex"
-              :class="{'is-active': tab.fullPath === $route.fullPath}"
-            >
-              <a @click="handleTabClick(tab)">
-                <span
-                  class="is-flex-auto"
-                  style="padding-right: 0.75rem"
-                >{{tab.name}}</span>
-                <button
-                  class="delete is-small"
-                  style="margin-right: -0.25rem"
-                  @click.stop="handleTabRemove(tab)"
-                ></button>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <keep-alive include="PostgresTable">
-          <router-view
-            :tabs="tabs"
-            :key="$route.fullPath"
-            @created="handleTabCreate"
-          />
-        </keep-alive>
-      </div>
+      <Tabs
+        max="5"
+        :parentRoute="routeParams"
+        include="PostgresTableWrapper"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import pg from '@/api/postgres'
+
+import Tabs from './tabs'
 import Schema from './menus/Schema'
 import Database from './menus/Database'
 import TableMenu from './menus/TableMenu'
@@ -105,6 +77,7 @@ export default {
   name: 'Postgres',
 
   components: {
+    Tabs,
     Schema,
     Database,
     TableMenu,
@@ -117,10 +90,7 @@ export default {
 
   data () {
     return {
-      tabs: [],
       tables: [],
-      tabKey: '',
-      databases: [],
       isLoading: false,
     }
   },
@@ -142,11 +112,24 @@ export default {
       return this.connection + this.database + this.schema
     },
 
-    params () {
+    apiParams () {
       return {
         schema: this.schema,
         database: this.database,
         connectionId: this.connectionId
+      }
+    },
+
+    routeParams () {
+      return {
+        name: 'postgres',
+        params: {
+          connectionId: this.connectionId
+        },
+        query: {
+          schema: this.schema,
+          database: this.database,
+        }
       }
     },
 
@@ -161,86 +144,33 @@ export default {
 
   methods: {
     handleSchemaChange (schema) {
-      this.$router.push({
-        name: 'postgres',
-        params: {
-          connectionId: this.connectionId
-        },
-        query: {
-          schema,
-          database: this.database,
-        }
-      })
+      this.routeParams.query.schema = schema
+      this.$router.push(this.routeParams)
     },
 
     handleDatabaseChange (database) {
-      this.$router.push({
-        name: 'postgres',
-        params: {
-          connectionId: this.connectionId
-        },
-        query: {
-          database,
-          schema: 'public',
-        }
-      })
+      this.routeParams.query.database = database
+      this.$router.push(this.routeParams)
     },
 
     handleTableClick (table) {
-      const name = 'postgres table'
-      const { schema, database, connectionId } = this
-      const params = {
-        name,
-        query: {
-          table,
-          schema,
-          database,
-          connectionId
-        }
-      }
-
-      this.$router.push(params)
+      this.routeParams.name = 'postgres table'
+      this.routeParams.query.table = table
+      this.$router.push(this.routeParams)
     },
 
     handleRefreshClick () {
-      this.isLoading || this.getTables()
-    },
-
-    handleTabRemove (tab) {
-      const index = this.tabs.findIndex(tb => tb.fullPath === tab.fullPath)
-
-      if (tab.fullPath !== this.$route.fullPath) {
-
-      } if (this.tabs.length === 1) {
-        this.$router.push(tab.fullPath)
-      } else if (index > 0) {
-        this.handleTabClick(this.tabs[index - 1])
-      } else {
-        this.handleTabClick(this.tabs[index + 1])
-      }
-
-      this.tabs.splice(index, 1)
-    },
-
-    handleTabClick (tab) {
-      this.$router.push(tab.fullPath)
-    },
-
-    handleTabCreate (tab) {
-      this.tabs.push(tab)
+      this.getTables()
     },
 
     getTables () {
-      this.isLoading = true
+      if (this.isLoading) return
 
-      pg.tables(this.params)
+      this.isLoading = true
+      pg.tables(this.apiParams)
         .then(response => this.tables = response.data)
         .catch(() => this.notifications.error('数据库连接失败'))
         .finally(() => this.isLoading = false)
-    },
-
-    getTabByFullPath (fullPath) {
-      return this.tabs.find(tab => tab.fullPath === fullPath)
     }
   },
 
@@ -249,13 +179,10 @@ export default {
       immediate: true,
       handler () {
         this.getTables()
+        if (this.table) {
+          this.handleTableClick(this.table)
+        }
       }
-    }
-  },
-
-  created () {
-    if (this.table) {
-      this.handleTableClick(this.table)
     }
   }
 }

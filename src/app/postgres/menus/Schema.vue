@@ -8,7 +8,7 @@
     <span class="icon">
       <span class="iconfont icon-storage"></span>
     </span>
-    <span>{{schema}}</span>
+    <span>{{params.schema}}</span>
     <div
       class="dropdown-menu"
       :class="{'is-active': isShowDropdown}"
@@ -43,7 +43,6 @@ export default {
 
   props: {
     params: Object,
-    schema: String,
     database: String
   },
 

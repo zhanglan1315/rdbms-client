@@ -1,35 +1,20 @@
 <template>
-  <div
-    v-if="!isDestroyed"
-    class="is-flex-auto is-flex is-flex-column"
-  >
-    <TableView
-      :table="table"
-      :schema="schema"
-      :database="database"
-      :connectionId="connectionId"
-    />
-  </div>
+  <TableView
+    :table="table"
+    :schema="schema"
+    :database="database"
+    :connectionId="connectionId"
+  />
 </template>
 
 <script>
 import TableView from './TableView'
 
 export default {
-  name: 'PostgresTable',
-
-  props: {
-    tabs: Array
-  },
+  name: 'PostgresTableWrapper',
 
   components: {
     TableView
-  },
-
-  data () {
-    return {
-      isDestroyed: false
-    }
   },
 
   computed: {
@@ -53,9 +38,12 @@ export default {
   created () {
     this.$emit('created', {
       vnode: this,
-      name: this.table,
-      fullPath: this.$route.fullPath
+      name: this.table
     })
+  },
+
+  activated () {
+    this.$emit('activated')
   }
 }
 </script>
