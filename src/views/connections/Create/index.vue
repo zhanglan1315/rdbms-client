@@ -4,7 +4,7 @@
       class="modal-background"
       @click="handleClose"
     ></div>
-    <div class="modal-card">
+    <div class="modal-card" style="width: 600px">
       <header class="modal-card-head">
         <p class="modal-card-title">连接信息</p>
       </header>
@@ -79,14 +79,15 @@
         <button
           class="button"
           @click="handleClose"
-        >取消</button>
+        >
+          取消
+        </button>
 
         <button
-          :disabled="!isChanged"
           class="button is-info"
-          @click="isChanged && $wait(handleSubmit)"
+          @click="$wait(() => handleSubmit())"
         >
-          保存
+          创建
         </button>
       </footer>
     </div>
@@ -94,20 +95,18 @@
 </template>
 
 <script>
-import Dependencies from '@/core/runtime'
 import ConnectionApi from '@/api/connection'
 import ConnectionTest from '../common/ConnectionTest'
 
 export default {
-  name: 'ConnectionManage',
+  name: 'ConnectionCreate',
 
   components: {
     ConnectionTest
   },
 
   props: {
-    connection: {},
-    connectionId: {},
+    total: Number,
   },
 
   data () {
@@ -120,20 +119,8 @@ export default {
         username: '',
         password: '',
         database: '',
-        schema: null,
+        schema: null
       }
-    }
-  },
-
-  computed: {
-    isChanged () {
-      for (let key in this.params) {
-        if (this.params[key] !== this.connection[key]) {
-          return true
-        }
-      }
-
-      return false
     }
   },
 
@@ -145,28 +132,33 @@ export default {
     },
 
     async handleSubmit () {
-      const item = await ConnectionApi.update(this.connectionId, this.params)
+      const item = await ConnectionApi.create(this.params)
 
-      this.$emit('updated', item)
-
+      this.$emit('created', item)
       this.handleClose()
+      this.$notification.success('数据库连接已创建')
+    },
 
-      Dependencies.notification.success('数据库连接已保存')
+    autoCompletePostgres () {
+      this.params.port = 5432
+      this.params.username = 'postgres'
+      this.params.database = 'postgres'
     }
   },
 
   watch: {
-    'connection': {
-      immediate: true,
-
-      handler (connection) {
-        if (!connection) return
-
-        for (let key in this.params) {
-          this.params[key] = connection[key]
-        }
+    'params.driver' (driver) {
+      switch (driver) {
+        case 'pgsql':
+          this.autoCompletePostgres()
       }
     }
+  },
+
+  created () {
+    this.params.driver = 'pgsql'
+    this.params.name = 'Database ' + (this.total + 1)
+    this.params.schema = 'public'
   }
 }
 </script>

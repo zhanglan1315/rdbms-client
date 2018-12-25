@@ -1,4 +1,4 @@
-import axios from '@/core/axios'
+import axios from '@/packages/axios'
 
 export default {
   login (username, password) {

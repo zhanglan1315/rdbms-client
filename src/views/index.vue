@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import dependencies from '@/core/runtime'
-
 import token from './bootstrap/token'
 import Topbar from './layout/Topbar'
 import Notification from '@/components/Notification'
@@ -34,7 +32,7 @@ export default {
 
   components: {
     Topbar,
-    Notification
+    Notification: Notification.component
   },
 
   computed: {
@@ -47,12 +45,8 @@ export default {
     }
   },
 
-  mounted () {
-    dependencies.notification = this.$refs.notification
-  },
-
   updated () {
-    dependencies.notification = this.$refs.notification
+    Notification.register(this.$refs.notification)
   }
 }
 </script>

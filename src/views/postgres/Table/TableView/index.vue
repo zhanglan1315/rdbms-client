@@ -4,8 +4,19 @@
       class="is-flex has-border-bottom"
       style="height: 45px; padding: 0.25rem;"
     >
-      <div class="field has-addons is-marginless">
+      <div class="field is-marginless">
         <div class="control">
+          <a
+            class="button is-white"
+            style="margin-right: 0.25rem"
+            :class="{'is-light': isQueryShow}"
+            @click="isQueryShow = !isQueryShow"
+          >
+            <span class="icon">
+              <i class="iconfont icon-search"></i>
+            </span>
+          </a>
+
           <a
             class="button is-white"
             @click="handleRefresh"
@@ -16,25 +27,14 @@
             </span>
           </a>
         </div>
-        <div class="control">
-          <a
-            class="button is-white"
-            :class="{'is-light': isQueryShow}"
-            @click="isQueryShow = !isQueryShow"
-          >
-            <span class="icon">
-              <i class="iconfont icon-search"></i>
-            </span>
-          </a>
-        </div>
       </div>
 
       <div
         class="has-background-grey-lighter"
-        style="width: 1px; margin: 0.1rem"
+        style="width: 1px; margin: 0.1rem; margin-left: 0.25rem; margin-right: 0.25rem"
       ></div>
 
-      <div class="field has-addons is-marginless">
+      <div class="field is-marginless">
         <div class="control">
           <a
             class="button is-white"
@@ -47,8 +47,7 @@
             </span>
             <span>保存</span>
           </a>
-        </div>
-        <div class="control">
+
           <a
             class="button is-white"
             v-if="focusedCell"
@@ -61,11 +60,9 @@
 
       <div
         class="has-background-grey-lighter"
-        style="width: 1px; margin: 0.1rem"
+        style="width: 1px; margin: 0.1rem; margin-left: 0.25rem; margin-right: 0.25rem"
       ></div>
     </div>
-
-    <Notifications ref="notifications"/>
 
     <div
       v-show="isQueryShow"
@@ -156,7 +153,6 @@ import string from './cells/String'
 import integer from './cells/Integer'
 import Default from './cells/Default'
 import Pagination from '@/components/Pagination'
-import Notifications from '@/components/Notification'
 
 const cells = {
   string,
@@ -168,8 +164,7 @@ export default {
   name: 'PostgresTableView',
 
   components: {
-    Pagination,
-    Notifications
+    Pagination
   },
 
   props: {
@@ -234,10 +229,6 @@ export default {
 
     hasModifiers () {
       return Object.keys(this.modifiers).length
-    },
-
-    notifications () {
-      return this.$refs.notifications
     }
   },
 
@@ -316,7 +307,7 @@ export default {
         .then(response => this.search())
         .catch(error => {
           const message = error.response.data.message
-          this.notifications.error(message, 1000000)
+          this.$notification.error(message, 1000000)
         })
         .finally(() => this.isUpdating = false)
     },
@@ -330,9 +321,13 @@ export default {
       this.dataSource.data = []
       this.dataSource.columns = []
 
+      const handleError = error => {
+        this.$notification.error(error.response.data.message, 100000)
+      }
+
       return pg.tableSearch(this.params)
         .then(response => this.dataSource = response.data)
-        .catch(error => this.notifications.error(error.response.data.message, 100000))
+        .catch(handleError)
         .finally(() => this.isLoading = false)
     },
 

@@ -1,6 +1,5 @@
 <template>
   <div class="full-container is-flex is-flex-column">
-    <Notifications ref="notifications"/>
     <div class="full-container is-flex">
       <div
         class="menu-container is-unselectable"
@@ -56,10 +55,12 @@
         </div>
       </div>
       <Tabs
-        max="5"
         :parentRoute="routeParams"
         include="PostgresTableWrapper"
       />
+      <!-- <div class="is-flex-auto">
+        <router-view :key="$route.fullPath"/>
+      </div> -->
     </div>
   </div>
 </template>
@@ -71,8 +72,6 @@ import Tabs from './tabs'
 import Schema from './menus/Schema'
 import Database from './menus/Database'
 import TableMenu from './menus/TableMenu'
-import Notifications from '@/components/Notification'
-
 export default {
   name: 'Postgres',
 
@@ -80,8 +79,7 @@ export default {
     Tabs,
     Schema,
     Database,
-    TableMenu,
-    Notifications
+    TableMenu
   },
 
   props: {
@@ -133,10 +131,6 @@ export default {
       }
     },
 
-    notifications () {
-      return this.$refs.notifications
-    },
-
     noTables () {
       return !this.isLoading && this.tables.length === 0
     }
@@ -166,10 +160,15 @@ export default {
     getTables () {
       if (this.isLoading) return
 
+      const handleError = () => {
+        this.$notification.error('数据库连接失败')
+        this.$router.push({ name: 'connections' })
+      }
+
       this.isLoading = true
       pg.tables(this.apiParams)
         .then(response => this.tables = response.data)
-        .catch(() => this.notifications.error('数据库连接失败'))
+        .catch(handleError)
         .finally(() => this.isLoading = false)
     }
   },

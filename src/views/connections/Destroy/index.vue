@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import Dependencies from '@/core/runtime'
 import ConnectionApi from '@/api/connection'
 
 export default {
@@ -45,7 +44,7 @@ export default {
       await ConnectionApi.destroy(this.connectionId)
       this.$emit('destroyed', this.connectionId)
       this.handleClose()
-      Dependencies.notification.error('数据库连接已删除')
+      this.$notification.error('数据库连接已删除')
     }
   }
 }

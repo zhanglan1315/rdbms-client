@@ -11,9 +11,12 @@
           class="is-flex"
         >
           <a @click="handleTabClick(tab)">
+            <span class="icon">
+              <i :class="'iconfont icon-' + tab.icon"></i>
+            </span>
             <span
               class="is-flex-auto"
-              style="padding-right: 0.75rem"
+              style="padding-right: 0.75rem; margin-left: -0.25rem"
             >{{tab.name}}</span>
             <button
               class="delete is-small"
@@ -101,13 +104,14 @@ export default {
       }
 
       tab.activated = false
+      tab.vnode.$destroy()
     },
 
     handleTabClick (tab) {
       this.$router.push(tab.fullpath)
     },
 
-    handleTabCreate ({vnode, name}) {
+    handleTabCreate (tab) {
       const fullpath = this.fullpath
 
       if (this.list.indexOf(fullpath) !== -1) {
@@ -119,8 +123,7 @@ export default {
 
       this.list.push(fullpath)
       this.$set(this.data, fullpath, {
-        name,
-        vnode,
+        ...tab,
         fullpath,
         activated: true
       })

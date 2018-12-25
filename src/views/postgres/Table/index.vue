@@ -38,6 +38,7 @@ export default {
   created () {
     this.$emit('created', {
       vnode: this,
+      icon: 'table',
       name: this.table
     })
   },
