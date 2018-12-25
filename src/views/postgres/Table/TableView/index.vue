@@ -101,6 +101,9 @@
             <tr>
               <th v-for="column in displayColumns" :key="column.name">
                 <span>{{column.name}}</span>
+                <span v-if="column.jsType === 'default'">
+                  {{column.pgType}}
+                </span>
               </th>
             </tr>
           </thead>
@@ -108,7 +111,7 @@
             <tr v-for="(datum, index) in dataSource.data" :key="index">
               <component
                 v-for="column in displayColumns" :key="column.name"
-                :is="cells[column.type]"
+                :is="cells[column.jsType]"
                 :value="datum[column.key]"
                 @modify="handleModify(datum, column, $event)"
                 @focus="handleCellFocus"
@@ -149,12 +152,14 @@
 
 <script>
 import pg from '@/api/postgres'
+import float from './cells/Float'
 import string from './cells/String'
 import integer from './cells/Integer'
 import Default from './cells/Default'
 import Pagination from '@/components/Pagination'
 
 const cells = {
+  float,
   string,
   integer,
   default: Default
@@ -219,7 +224,8 @@ export default {
         if (column.name !== 'ctid') {
           columns.push({
             key, ...column,
-            type: this.transColumnType(column.type)
+            pgType: column.type,
+            jsType: this.transColumnType(column.type)
           })
         }
       })
@@ -334,6 +340,8 @@ export default {
     transColumnType (type) {
       if (type.match(/^int/)) {
         return 'integer'
+      } else if (type.match(/^float/)) {
+        return 'float'
       } else if (type.match(/char/)) {
         return 'string'
       } else if (type.match(/^_/)) {
