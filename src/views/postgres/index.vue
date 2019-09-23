@@ -68,7 +68,7 @@
 <script>
 import pg from '@/api/postgres'
 
-import Tabs from './tabs'
+import Tabs from './Tabs/index.vue'
 import Schema from './menus/Schema'
 import Database from './menus/Database'
 import TableMenu from './menus/TableMenu'

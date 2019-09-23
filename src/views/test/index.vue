@@ -1,28 +1,34 @@
 <template>
-  <section class="section">
-    <a @mousedown="handleMousedown">1234123</a>
-
-    <div class="container">
-      <table class="table is-bordered">
-        <thead>
-          <th v-for="key in 5" :key="key">
-            测试列表 {{key}}
-          </th>
-        </thead>
-        <tbody>
-          <tr v-for="key in 10" :key="key">
-            <TableCell
-              v-for="key in 5" :key="key"
-            />
-          </tr>
-        </tbody>
-      </table>
+  <div class="container">
+    <div style="height: 1rem"></div>
+    <div>
+      <input type="text" class="input" v-model="msg">
     </div>
-  </section>
+    <a
+      class="button is-info"
+      @click="handleClick"
+    >
+      测试按钮
+    </a>
+  </div>
 </template>
 
 <script>
 import TableCell from '@/components/EditableCell'
+
+const socket = new WebSocket('ws://localhost:8501')
+
+socket.onopen = function () {
+  socket.send('system:hoister:1:state')
+}
+
+socket.onclose = function () {
+  console.log('close')
+}
+
+socket.onmessage = function (msg) {
+  console.log(msg.data)
+}
 
 export default {
   components: {
@@ -31,13 +37,13 @@ export default {
 
   data () {
     return {
-      test: 0
+      msg: '',
+      isConnected: true
     }
   },
 
   methods: {
-    handleMousedown () {
-      console.log(1000)
+    handleClick () {
     }
   }
 }
